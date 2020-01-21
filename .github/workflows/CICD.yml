@@ -1,6 +1,6 @@
 name: CICD
 
-# spell-checker:ignore CICD CODECOV MSVC MacOS Peltoche SHAs buildable clippy dpkg esac fakeroot gnueabihf halium libssl mkdir musl popd printf pushd rustfmt softprops toolchain
+# spell-checker:ignore CICD CODECOV MSVC MacOS Peltoche SHAs buildable clippy esac fakeroot gnueabihf halium libssl mkdir musl popd printf pushd rustfmt softprops toolchain
 
 env:
   PROJECT_NAME: dust
@@ -148,27 +148,6 @@ jobs:
         unset DEPLOY ; if [[ $REF_TAG =~ ^[vV]?[0-9].* ]]; then DEPLOY='true' ; fi
         echo set-output name=DEPLOY::${DEPLOY:-<empty>/false}
         echo ::set-output name=DEPLOY::${DEPLOY}
-        # DPKG architecture?
-        unset DPKG_ARCH ; case ${{ matrix.job.target }} in i686-*-linux-*) DPKG_ARCH=i686 ;; x86_64-*-linux-*) DPKG_ARCH=amd64 ;; esac;
-        echo set-output name=DPKG_ARCH::${DPKG_ARCH}
-        echo ::set-output name=DPKG_ARCH::${DPKG_ARCH}
-        # DPKG version?
-        unset DPKG_VERSION ; if [[ $REF_TAG =~ ^[vV]?[0-9].* ]]; then DPKG_VERSION=${REF_TAG/#[vV]/} ; fi
-        echo set-output name=DPKG_VERSION::${DPKG_VERSION}
-        echo ::set-output name=DPKG_VERSION::${DPKG_VERSION}
-        # DPKG base name/conflicts?
-        DPKG_BASENAME=${PROJECT_NAME}
-        DPKG_CONFLICTS=${PROJECT_NAME}-musl
-        case ${{ matrix.job.target }} in *-musl) DPKG_BASENAME=${PROJECT_NAME}-musl ; DPKG_CONFLICTS=${PROJECT_NAME} ;; esac;
-        echo set-output name=DPKG_BASENAME::${DPKG_BASENAME}
-        echo set-output name=DPKG_CONFLICTS::${DPKG_CONFLICTS}
-        echo ::set-output name=DPKG_BASENAME::${DPKG_BASENAME}
-        echo ::set-output name=DPKG_CONFLICTS::${DPKG_CONFLICTS}
-        # DPKG name
-        unset DPKG_NAME;
-        if [[ -n $DPKG_ARCH && -n $DPKG_VERSION ]]; then DPKG_NAME="${DPKG_BASENAME}_${DPKG_VERSION}_${DPKG_ARCH}.deb" ; fi
-        echo set-output name=DPKG_NAME::${DPKG_NAME}
-        echo ::set-output name=DPKG_NAME::${DPKG_NAME}
         # target-specific options
         # * CARGO_USE_CROSS (truthy)
         CARGO_USE_CROSS='true' ; case '${{ matrix.job.use-cross }}' in ''|0|f|false|n|no) unset CARGO_USE_CROSS ;; esac;
