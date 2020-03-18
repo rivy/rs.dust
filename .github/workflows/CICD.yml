@@ -10,7 +10,7 @@ env:
   PROJECT_NAME: dust
   PROJECT_DESC: "du + rust = dust"
   PROJECT_AUTH: "bootandy"
-  RUST_MIN_SRV: "1.31.0"
+  RUST_MIN_SRV: "1.35.0"
 
 on: [push, pull_request]
 
@@ -71,6 +71,7 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         toolchain: ${{ env.RUST_MIN_SRV }}
+        default: true
         profile: minimal # minimal component installation (ie, no documentation)
     - name: Test
       uses: actions-rs/cargo@v1
