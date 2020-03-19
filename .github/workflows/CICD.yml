@@ -46,7 +46,7 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         toolchain: stable
-        override: true
+        default: true
         profile: minimal # minimal component installation (ie, no documentation)
         components: rustfmt, clippy
     - name: "`fmt` testing"
@@ -195,7 +195,7 @@ jobs:
       with:
         toolchain: ${{ steps.vars.outputs.TOOLCHAIN }}
         target: ${{ matrix.job.target }}
-        override: true
+        default: true
         profile: minimal # minimal component installation (ie, no documentation)
     - name: Info
       shell: bash
